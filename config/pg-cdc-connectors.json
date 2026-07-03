@@ -1,0 +1,20 @@
+{
+  "name": "postgres-cdc-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "plugin.name": "pgoutput",
+    "database.hostname": "cdc_postgres",
+    "database.port": "5432",
+    "database.user": "debezium",
+    "database.password": "dbz_password",
+    "database.dbname": "app_db",
+    "topic.prefix": "cdc",
+    "table.include.list": "public.orders",
+    "schema.history.internal.kafka.bootstrap.servers": "cdc_kafka:29092",
+    "schema.history.internal.kafka.topic": "schema-changes.postgres",
+    "config.storage.replication.factor": "1",
+    "offset.storage.replication.factor": "1",
+    "status.storage.replication.factor": "1"
+  }
+}
