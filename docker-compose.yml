@@ -67,9 +67,57 @@ services:
     networks:
       - pipeline_net
 
+  spark-master:
+    image: apache/spark:3.5.1
+    container_name: cdc_spark_master
+    user: "root"
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+    # FIXED: Added the executable wrapper pattern to keep the master node alive foreground
+    entrypoint: ["/bin/bash", "-c", "/opt/spark/sbin/start-master.sh && tail -f /opt/spark/logs/*"]
+    volumes:
+      - ./pyspark_apps:/opt/spark/apps
+    networks:
+      - pipeline_net
+
+  spark-worker:
+    image: apache/spark:3.5.1
+    container_name: cdc_spark_worker
+    user: "root"
+    depends_on:
+      - spark-master
+    # FIXED: Added the executable wrapper pattern to keep the worker node alive foreground
+    entrypoint: ["/bin/bash", "-c", "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 && tail -f /opt/spark/logs/*"]
+    environment:
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=2G
+    networks:
+      - pipeline_net
+
+  minio:
+    image: minio/minio:latest
+    container_name: cdc_minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio_admin
+      MINIO_ROOT_PASSWORD: minio_password
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - pipeline_net
+
 networks:
   pipeline_net:
     driver: bridge
 
 volumes:
   pg_data:
+  minio_data:
