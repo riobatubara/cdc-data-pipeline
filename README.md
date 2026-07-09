@@ -5,7 +5,7 @@ This project demonstrates a production-grade, local sandbox environment for real
 #### Architecture
 ![CDC Data Pipeline Architecture Diagram](./cdc-data-pipeline.png)
 
-## 1. Infrastructure Deployment & Component VerificationTo avoid network connection errors, services are brought up and validated component-by-component in chronological order.
+### Infrastructure Deployment & Component VerificationTo avoid network connection errors, services are brought up and validated component-by-component in chronological order.
 
 ### Step 1: Initialize and Verify PostgreSQLStart the transactional database engine to execute init.sql and provision the replication user:
 ```
