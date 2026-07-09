@@ -3,7 +3,7 @@
 This project demonstrates a production-grade, local sandbox environment for real-time Change Data Capture (CDC) streaming database transactions into an analytics data lakehouse. It utilizes open-source software (OSS) without relying on abstract cloud services.
 
 #### Architecture
-![CDC Data Pipeline](./cdc-data-pipeline.png)
+![Architecture Diagram](./cdc-data-pipeline.png)
 
 ### Infrastructure Deployment & Component VerificationTo avoid network connection errors, services are brought up and validated component-by-component in chronological order.
 
